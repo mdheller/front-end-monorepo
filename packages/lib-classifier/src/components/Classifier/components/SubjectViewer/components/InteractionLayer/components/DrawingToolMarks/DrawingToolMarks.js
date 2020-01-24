@@ -1,13 +1,17 @@
 import React, { useContext } from 'react'
 import { observer } from 'mobx-react'
 import PropTypes from 'prop-types'
+import { useTransition, animated } from 'react-spring'
+import _ from 'lodash'
 import { DeleteButton, Mark } from '@plugins/drawingTools/components'
 import SVGContext from '@plugins/drawingTools/shared/SVGContext'
+
+const duration = 3000
 
 function DrawingToolMarks ({ activeMarkId, onDelete, onDeselectMark, onSelectMark, scale, marks }) {
   const { svg } = useContext(SVGContext)
 
-  return marks.map((mark, index) => {
+  const items = marks.map((mark, index) => {
     const { tool } = mark
     const MarkingComponent = observer(mark.toolComponent)
     const ObservedDeleteButton = observer(DeleteButton)
@@ -24,8 +28,10 @@ function DrawingToolMarks ({ activeMarkId, onDelete, onDeselectMark, onSelectMar
     }
 
     function deleteMark () {
-      tool.deleteMark(mark)
-      onDelete(mark)
+      const debouncedDeleteMark = _.debounce(tool.deleteMark, (duration + 1000))
+      debouncedDeleteMark(mark)
+      const debouncedOnDelete = _.debounce(onDelete, (duration + 1000))
+      debouncedOnDelete(mark)
     }
 
     function moveMark (event, difference) {
@@ -72,6 +78,17 @@ function DrawingToolMarks ({ activeMarkId, onDelete, onDeselectMark, onSelectMar
       </Mark>
     )
   })
+
+  const transitions = useTransition(items, item => item.key, {
+    from: { opacity: 0 },
+    enter: { opacity: 1 },
+    leave: { opacity: 0 },
+    config: { duration }
+  })
+
+  return transitions.map(({ item, props, key }) =>
+    <animated.g key={key} style={props}>{item}</animated.g>
+  )
 }
 
 DrawingToolMarks.propTypes = {
