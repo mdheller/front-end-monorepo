@@ -1,13 +1,29 @@
 import React, { useContext } from 'react'
 import { observer } from 'mobx-react'
 import PropTypes from 'prop-types'
+import { Transition, TransitionGroup } from 'react-transition-group'
+import _ from 'lodash'
 import { DeleteButton, Mark } from '@plugins/drawingTools/components'
 import SVGContext from '@plugins/drawingTools/shared/SVGContext'
+
+const duration = 1000
+
+const defaultStyle = {
+  transition: `opacity ${duration}ms ease-in-out`,
+  opacity: 0
+}
+
+const transitionStyles = {
+  entering: { opacity: 0 },
+  entered: { opacity: 1 },
+  exiting: { opacity: 1 },
+  exited: { opacity: 0 }
+}
 
 function DrawingToolMarks ({ activeMarkId, onDelete, onDeselectMark, onSelectMark, scale, marks }) {
   const { svg } = useContext(SVGContext)
 
-  return marks.map((mark, index) => {
+  const items = marks.map((mark, index) => {
     const { tool } = mark
     const MarkingComponent = observer(mark.toolComponent)
     const ObservedDeleteButton = observer(DeleteButton)
@@ -24,8 +40,10 @@ function DrawingToolMarks ({ activeMarkId, onDelete, onDeselectMark, onSelectMar
     }
 
     function deleteMark () {
-      tool.deleteMark(mark)
-      onDelete(mark)
+      const debouncedToolDelete = _.debounce(tool.deleteMark, (duration + 1000))
+      debouncedToolDelete(mark)
+      const debouncedOnDelete = _.debounce(onDelete, (duration + 1000))
+      debouncedOnDelete(mark)
     }
 
     function moveMark (event, difference) {
@@ -44,34 +62,55 @@ function DrawingToolMarks ({ activeMarkId, onDelete, onDeselectMark, onSelectMar
     }
 
     return (
-      <Mark
+      <Transition
         key={mark.id}
-        isActive={isActive}
-        coords={mark.coords}
-        dragStart={selectMark}
-        dragMove={moveMark}
-        dragEnd={deselectMark}
-        label={`Mark ${index}`}
-        mark={mark}
-        onDelete={deleteMark}
-        onDeselect={onDeselectMark}
-        onSelect={onSelectMark}
-        scale={scale}
+        timeout={duration}
+        component='g'
       >
-        <MarkingComponent
-          active={isActive}
-          mark={mark}
-          scale={scale}
-        />
-        {isActive && <ObservedDeleteButton
-          label={`Delete ${tool.type}`}
-          mark={mark}
-          scale={scale}
-          onDelete={deleteMark}
-        />}
-      </Mark>
+        {state => (
+          <g
+            key={mark.id}
+            style={{
+              ...defaultStyle,
+              ...transitionStyles[state]
+            }}
+          >
+            <Mark
+              key={mark.id}
+              isActive={isActive}
+              coords={mark.coords}
+              dragStart={selectMark}
+              dragMove={moveMark}
+              dragEnd={deselectMark}
+              label={`Mark ${index}`}
+              mark={mark}
+              onDelete={deleteMark}
+              onDeselect={onDeselectMark}
+              onSelect={onSelectMark}
+              scale={scale}
+            >
+              <MarkingComponent
+                active={isActive}
+                mark={mark}
+                scale={scale}
+              />
+              {isActive && <ObservedDeleteButton
+                label={`Delete ${tool.type}`}
+                mark={mark}
+                scale={scale}
+                onDelete={deleteMark}
+              />}
+            </Mark>
+          </g>
+        )}
+      </Transition>
     )
   })
+  return (
+    <TransitionGroup component={null}>
+      {items}
+    </TransitionGroup>
+  )
 }
 
 DrawingToolMarks.propTypes = {
