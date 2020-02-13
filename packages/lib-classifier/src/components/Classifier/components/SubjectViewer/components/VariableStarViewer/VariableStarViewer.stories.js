@@ -44,6 +44,12 @@ const barJSON = {
   period: variableStarPeriodMockData
 }
 
+const focusedSeries = variableStar.data.map((series) => {
+  if (series?.seriesData.length > 0) {
+    return { [series.seriesOptions.label]: true }
+  }
+})
+
 stories
   .add('light theme', () => {
     return (
@@ -51,6 +57,7 @@ stories
         <Box height='500px' width='700px'>
           <VariableStarViewer
             barJSON={barJSON}
+            focusedSeries={focusedSeries}
             imgSrc={image}
             phasedJSON={variableStar}
             rawJSON={object('data', variableStar)}

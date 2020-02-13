@@ -23,6 +23,7 @@ const StyledPlainButton = styled(PlainButton)`
 
 function Controls(props) {
   const {
+    focusedSeries,
     gridArea,
     periodMultiple,
     setSeriesFocus,
@@ -64,14 +65,20 @@ function Controls(props) {
       </FormField>
       <Box>
         <fieldset style={{ border: 'none', padding: 0 }}>
-          <label>
-            <input type='checkbox' />
-            <SpacedText style={{ fontSize: '0.5em' }}>red light</SpacedText>
-          </label>
-          <label>
-            <input type='checkbox' />
-            <SpacedText style={{ fontSize: '0.5em' }}>blue light</SpacedText>
-          </label>
+          {focusedSeries.map((series) => {
+            const [[label, checked]] = Object.entries(series)
+            return (
+              <CheckBox
+                checked={checked}
+                id={label}
+                label={<SpacedText style={{ fontSize: '0.5em' }}>{label}</SpacedText>}
+                name='series-focus'
+                onClick={event => setSeriesFocus(event)}
+                type='checkbox'
+                value={label}
+              />
+            )
+          })}
         </fieldset>
         <SpacedText size='xsmall'>
           {counterpart('VariableStarViewer.focus')}
@@ -82,6 +89,7 @@ function Controls(props) {
 }
 
 Controls.defaultProps = {
+  focusedSeries: [],
   gridArea: '',
   periodMultiple: 1,
   setSeriesFocus: () => {},
@@ -90,6 +98,7 @@ Controls.defaultProps = {
 }
 
 Controls.propTypes = {
+  focusedSeries: PropTypes.array,
   gridArea: PropTypes.string,
   periodMultiple: PropTypes.number,
   setSeriesFocus: PropTypes.func,

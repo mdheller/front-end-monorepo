@@ -22,6 +22,7 @@ const VariableStarViewer = React.forwardRef(function VariableStarViewer(props, r
       period
     },
     imgSrc,
+    focusedSeries,
     periodMultiple,
     phasedJSON,
     rawJSON,
@@ -46,6 +47,7 @@ const VariableStarViewer = React.forwardRef(function VariableStarViewer(props, r
       ]}
     >
       <Controls
+        focusedSeries={focusedSeries}
         gridArea='controls'
         periodMultiple={periodMultiple}
         setPeriodMultiple={setPeriodMultiple}
@@ -57,6 +59,7 @@ const VariableStarViewer = React.forwardRef(function VariableStarViewer(props, r
       >
         <ScatterPlotViewer
           data={phasedJSON.data}
+          focusedSeries={focusedSeries}
           xAxisLabel={counterpart('VariableStarViewer.phase')}
           yAxisLabel={phasedJSON.chartOptions.yAxisLabel}
         />
@@ -66,6 +69,7 @@ const VariableStarViewer = React.forwardRef(function VariableStarViewer(props, r
       >
         <ScatterPlotViewer
           data={rawJSON.data}
+          focusedSeries={focusedSeries}
           xAxisLabel={rawJSON.chartOptions.xAxisLabel}
           yAxisLabel={rawJSON.chartOptions.yAxisLabel}
         />
@@ -79,11 +83,13 @@ const VariableStarViewer = React.forwardRef(function VariableStarViewer(props, r
       >
         <BarChartViewer
           data={period.data}
+          focusedSeries={focusedSeries}
           xAxisLabel={period.options.xAxisLabel}
           yAxisLabel={period.options.yAxisLabel}
         />
         <BarChartViewer
           data={amplitude.data}
+          focusedSeries={focusedSeries}
           xAxisLabel={amplitude.options.xAxisLabel}
           yAxisLabel={amplitude.options.yAxisLabel}
         />
@@ -119,6 +125,7 @@ VariableStarViewer.defaultProps = {
       options: {}
     }
   },
+  focusedSeries: [],
   imgSrc: '',
   periodMultiple: 1,
   phasedJSON: {
@@ -152,6 +159,7 @@ VariableStarViewer.propTypes = {
       options: PropTypes.object
     })
   }),
+  focusedSeries: PropTypes.array,
   imgSrc: PropTypes.string,
   periodMultiple: PropTypes.number,
   phasedJSON: PropTypes.shape({

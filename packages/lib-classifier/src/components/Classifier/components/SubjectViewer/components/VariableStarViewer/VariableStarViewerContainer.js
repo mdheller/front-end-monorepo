@@ -17,9 +17,10 @@ class VariableStarViewerContainer extends Component {
     this.viewer = React.createRef()
     this.state = {
       barJSON: {},
-      seriesOptions: [],
+      focusedSeries: [],
       imageSrc: '',
       invertYAxis: false,
+      loadingState: asyncStates.initialized,
       periodMultiple: 1,
       phasedJSON: {},
       rawJSON: {}
@@ -55,6 +56,7 @@ class VariableStarViewerContainer extends Component {
   }
 
   async requestData() {
+    this.setState({ loadingState: asyncStates.loading })
     const { onError } = this.props
     try {
       const url = this.getSubjectUrl()
@@ -62,8 +64,10 @@ class VariableStarViewerContainer extends Component {
 
       // Get the JSON data, or (as a failsafe) parse the JSON data if the
       // response is returned as a string
+      this.setState({ loadingState: asyncStates.success })
       return response.body || JSON.parse(response.text)
     } catch (error) {
+      this.setState({ loadingState: asyncStates.error })
       onError(error)
       return {}
     }
@@ -84,8 +88,10 @@ class VariableStarViewerContainer extends Component {
     const target = this.viewer.current
     const phasedJSON = this.calculatePhase(rawJSON)
     const barJSON = this.calculateBarJSON(rawJSON)
+    const focusedSeries = this.setupSeriesFocus(rawJSON)
     this.setState({
       barJSON,
+      focusedSeries,
       phasedJSON,
       rawJSON
     },
@@ -119,6 +125,14 @@ class VariableStarViewerContainer extends Component {
     this.setState({ periodMultiple }, () => this.calculateJSON())
   }
 
+  setupSeriesFocus (rawJSON) {
+    return rawJSON.data.map((series) => {
+      if (series?.seriesData.length > 0) {
+        return { [series.seriesOptions.label]: true }
+      }
+    })
+  }
+
   setSeriesFocus(seriesToFocus) {
     // TODO add handling
   }
@@ -139,6 +153,7 @@ class VariableStarViewerContainer extends Component {
     return (
       <VariableStarViewer
         barJSON={this.state.barJSON}
+        focusedSeries={this.state.focusedSeries}
         imageSrc={this.state.imageSrc}
         periodMultiple={this.state.periodMultiple}
         phasedJSON={this.state.phasedJSON}

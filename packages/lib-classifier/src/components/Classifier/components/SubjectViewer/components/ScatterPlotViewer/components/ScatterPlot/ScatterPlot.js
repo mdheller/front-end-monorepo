@@ -7,6 +7,7 @@ import Background from '../../../SVGComponents/Background'
 import Chart from '../../../SVGComponents/Chart'
 import Axes from '../Axes'
 import { glyphComponents } from '../../helpers/constants'
+import getDataSeriesColor from '../../../../helpers/getDataSeriesColor'
 
 import {
   getDataPoints,
@@ -23,7 +24,7 @@ function ScatterPlot (props) {
     children,
     data,
     dataPointSize,
-    glyphColors,
+    focusedSeries,
     margin,
     padding,
     parentHeight,
@@ -49,18 +50,6 @@ function ScatterPlot (props) {
     parentWidth,
     tickDirection
   }
-
-  // The drawing tool colors, only used in the lab right now
-  // Candidates to be moved into the zooniverse theme
-  const standardGlyphColors = [
-    '#FF3C25',
-    '#235DFF',
-    '#FFFF03',
-    '#FF9300',
-    '#06FE76',
-    '#0CFFE0',
-    '#FF40FF'
-  ]
 
   const leftPosition = left(tickDirection, margin)
   const topPosition = top(tickDirection, margin)
@@ -116,9 +105,7 @@ function ScatterPlot (props) {
             width={plotWidth}
           />}
         {dataPoints.map((series, seriesIndex) => {
-          const glyphColor = series.seriesOptions?.color ||
-          glyphColors[seriesIndex] ||
-          standardGlyphColors[seriesIndex]
+          const glyphColor = getDataSeriesColor(series, seriesIndex, focusedSeries, colors)
 
           const errorBarColor = lighten(0.25, glyphColor)
           const GlyphComponent = glyphComponents[seriesIndex]
@@ -200,7 +187,7 @@ ScatterPlot.defaultProps = {
   axisColor: '',
   backgroundColor: '',
   dataPointSize: 20,
-  glyphColors: [],
+  focusedSeries: [],
   margin: {
     bottom: 60,
     left: 60,
@@ -259,7 +246,7 @@ ScatterPlot.propTypes = {
     }))
   ]).isRequired,
   dataPointSize: PropTypes.number,
-  glyphColors: PropTypes.arrayOf(PropTypes.string),
+  focusedSeries: PropTypes.array,
   margin: PropTypes.shape({
     bottom: PropTypes.number,
     left: PropTypes.number,

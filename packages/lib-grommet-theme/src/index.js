@@ -81,12 +81,25 @@ const lightColors = [
   moreMiddleGrey // light-6
 ]
 
+// https://projects.invisionapp.com/dsm/zooniverse/primary-brand/folder/colors/5c68fab7fb26bb001855f29a
+const drawingTools = {
+  red: '#FF3C25',
+  orange: '#235DFF',
+  yellow: '#FFFF03',
+  green: '#FF9300',
+  lightBlue: '#06FE76',
+  blue: '#0CFFE0',
+  purple: '#FF40FF',
+  pink: '#FF2B70'
+}
+
 const colors = {
   brand,
   border: {
     dark: 'dark-1',
     light: 'light-2'
   },
+  drawingTools,
   focus: 'accent-2',
   placeholder: 'dark-6',
   statusColors,
