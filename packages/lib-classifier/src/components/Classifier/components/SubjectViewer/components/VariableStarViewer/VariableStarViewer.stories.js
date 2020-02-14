@@ -54,7 +54,7 @@ stories
   .add('light theme', () => {
     return (
       <Grommet theme={zooTheme}>
-        <Box height='500px' width='700px'>
+        <Box height='500px' width='large'>
           <VariableStarViewer
             barJSON={barJSON}
             focusedSeries={focusedSeries}
@@ -70,7 +70,7 @@ stories
     const darkZooTheme = Object.assign({}, zooTheme, { dark: true })
     return (
       <Grommet theme={darkZooTheme}>
-        <Box height='medium' width='large'>
+        <Box height='500px' width='large'>
           <VariableStarViewer
             barJSON={barJSON}
             imgSrc={image}
@@ -85,7 +85,7 @@ stories
     const darkZooTheme = Object.assign({}, zooTheme, { dark: true })
     return (
       <Grommet theme={darkZooTheme}>
-        <Box height='medium' width='large'>
+        <Box height='500px' width='large'>
           <VariableStarViewer
             barJSON={barJSON}
             imgSrc={image}

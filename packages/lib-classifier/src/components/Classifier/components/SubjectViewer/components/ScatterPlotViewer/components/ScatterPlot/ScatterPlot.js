@@ -6,9 +6,8 @@ import { lighten } from 'polished'
 import Background from '../../../SVGComponents/Background'
 import Chart from '../../../SVGComponents/Chart'
 import Axes from '../Axes'
-import { glyphComponents } from '../../helpers/constants'
 import getDataSeriesColor from '../../../../helpers/getDataSeriesColor'
-
+import getDataSeriesSymbol from '../../../../helpers/getDataSeriesSymbol'
 import {
   getDataPoints,
   left,
@@ -108,7 +107,7 @@ function ScatterPlot (props) {
           const glyphColor = getDataSeriesColor(series?.seriesOptions, seriesIndex, focusedSeries, colors)
 
           const errorBarColor = lighten(0.25, glyphColor)
-          const GlyphComponent = glyphComponents[seriesIndex]
+          const GlyphComponent = getDataSeriesSymbol(seriesIndex)
 
           return series.seriesData.map((point, pointIndex) => {
             let xErrorBarPoints, yErrorBarPoints

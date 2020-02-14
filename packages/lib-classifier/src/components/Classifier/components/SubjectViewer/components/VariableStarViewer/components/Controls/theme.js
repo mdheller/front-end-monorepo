@@ -13,13 +13,6 @@ function Circle (props) {
 }
 
 const theme = {
-  checkBox: {
-    gap: 'xsmall',
-    // icons: {
-    //   checked: Circle
-    // },
-    size: '12px'
-  },
   formField: {
     border: 'none',
     extend: () => css`

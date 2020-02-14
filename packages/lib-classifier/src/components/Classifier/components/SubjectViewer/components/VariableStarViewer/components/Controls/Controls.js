@@ -4,7 +4,8 @@ import {
   Box,
   CheckBox,
   FormField,
-  RadioButtonGroup
+  RadioButtonGroup,
+  ThemeContext
 } from 'grommet'
 import styled, { css } from 'styled-components'
 import { PlainButton, SpacedText, withThemeContext } from '@zooniverse/react-components'
@@ -13,26 +14,28 @@ import FlipIcon from '../FlipIcon'
 import en from '../../locales/en'
 import theme from './theme'
 import getDataSeriesColor from '../../../../helpers/getDataSeriesColor'
+import getDataSeriesSymbol from '../../../../helpers/getDataSeriesSymbol'
+import getCheckBoxTheme from './getCheckBoxTheme'
 
 counterpart.registerTranslations('en', en)
 
-const StyledPlainButton = styled(PlainButton)`
+export const StyledPlainButton = styled(PlainButton)`
   > div {
     flex-direction: column;
   }
 `
 
-const StyledCheckBox = styled(CheckBox)`
-
-  /* > svg { */
-    ${props => css`
-      border-color: ${props.color};
-      color: ${props.color};
-      fill: ${props.color};
-      stroke: ${props.color};
-    `}
-  /* } */
-`
+function Label ({ label, ...rest }) {
+  return (
+    <SpacedText
+      size='0.5em'
+      weight='bold'
+      {...rest}
+    >
+      {label}
+    </SpacedText>
+  )
+}
 
 function Controls(props) {
   const {
@@ -64,13 +67,13 @@ function Controls(props) {
       </SpacedText>
       <StyledPlainButton
         icon={<FlipIcon />}
-        label={<SpacedText size='xsmall'>{counterpart('VariableStarViewer.flip')}</SpacedText>}
+        label={<Label label={counterpart('VariableStarViewer.flip')} />}
         onClick={event => setYAxisInversion(event)}
         pad='small'
       />
       <FormField
         htmlFor='periodMultiple'
-        label={<SpacedText size='xsmall'>{counterpart('VariableStarViewer.periodMultiple')}</SpacedText>}
+        label={<SpacedText size='10px' weight='bold'>{counterpart('VariableStarViewer.periodMultiple')}</SpacedText>}
       >
         <RadioButtonGroup
           direction='row'
@@ -83,29 +86,47 @@ function Controls(props) {
         />
       </FormField>
       <Box>
-        <fieldset style={{ border: 'none', padding: 0 }}>
+        <Box 
+          direction='row'
+
+          pad='none'
+        >
           {focusedSeries.map((series, seriesIndex) => {
             const [[label, checked]] = Object.entries(series)
             const { seriesOptions } = data[seriesIndex]
             const color = getDataSeriesColor(seriesOptions, seriesIndex, focusedSeries, colors)
+            const Glyph = getDataSeriesSymbol(seriesIndex)
+            const checkBoxTheme = getCheckBoxTheme(color)
             return (
-              <StyledCheckBox
-                checked={checked}
-                color={color}
-                id={label}
-                key={`${label}-${seriesIndex}`}
-                label={<SpacedText style={{ fontSize: '0.5em' }}>{label}</SpacedText>}
-                name='series-focus'
-                onChange={event => { setSeriesFocus(event) }}
-                type='checkbox'
-                value={label}
-              />
+              <Box border={{ color: 'light-6', size: 'xsmall' }} pad={{ horizontal: '5px', vertical: '2.5px' }} round='xsmall'>
+                <ThemeContext.Extend
+                  key={`${label}-${seriesIndex}`}
+                  value={checkBoxTheme}
+                >
+                  <CheckBox
+                    checked={checked}
+                    id={label}
+                    label={
+                      <Box direction='row'>
+                        <SpacedText style={{ fontSize: '0.5em', whiteSpace: 'nowrap' }}>
+                          {label}
+                        </SpacedText>
+                        <svg height='10px' viewBox='0 0 10 10' width='10px' style={{ padding: '1.5px 0 0 1ch' }}>
+                          <Glyph left={5} fill={color} size={20} top={5} />
+                        </svg>
+                      </Box>
+                    }
+                    name='series-focus'
+                    onChange={event => { setSeriesFocus(event) }}
+                    type='checkbox'
+                    value={label}
+                  />
+                </ThemeContext.Extend>
+              </Box>
             )
           })}
-        </fieldset>
-        <SpacedText size='xsmall'>
-          {counterpart('VariableStarViewer.focus')}
-        </SpacedText>
+        </Box>
+        <Label label={counterpart('VariableStarViewer.focus')} margin={{ top: 'xsmall' }} />
       </Box>
     </Box>
   )
