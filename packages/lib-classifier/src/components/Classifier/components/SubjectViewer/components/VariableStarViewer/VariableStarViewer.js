@@ -28,7 +28,8 @@ const VariableStarViewer = React.forwardRef(function VariableStarViewer(props, r
     rawJSON,
     setPeriodMultiple,
     setSeriesFocus,
-    setYAxisInversion
+    setYAxisInversion,
+    theme
   } = props
 
   return (
@@ -47,12 +48,14 @@ const VariableStarViewer = React.forwardRef(function VariableStarViewer(props, r
       ]}
     >
       <Controls
+        data={rawJSON.data}
         focusedSeries={focusedSeries}
         gridArea='controls'
         periodMultiple={periodMultiple}
         setPeriodMultiple={setPeriodMultiple}
         setSeriesFocus={setSeriesFocus}
         setYAxisInversion={setYAxisInversion}
+        theme={theme}
       />
       <Box
         gridArea='phasedJSON'
@@ -177,4 +180,5 @@ VariableStarViewer.propTypes = {
   zooming: PropTypes.bool
 }
 
-export default VariableStarViewer
+export default withTheme(VariableStarViewer)
+export { VariableStarViewer }

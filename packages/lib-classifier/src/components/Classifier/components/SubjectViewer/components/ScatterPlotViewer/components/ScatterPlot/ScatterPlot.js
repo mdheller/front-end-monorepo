@@ -105,7 +105,7 @@ function ScatterPlot (props) {
             width={plotWidth}
           />}
         {dataPoints.map((series, seriesIndex) => {
-          const glyphColor = getDataSeriesColor(series, seriesIndex, focusedSeries, colors)
+          const glyphColor = getDataSeriesColor(series?.seriesOptions, seriesIndex, focusedSeries, colors)
 
           const errorBarColor = lighten(0.25, glyphColor)
           const GlyphComponent = glyphComponents[seriesIndex]

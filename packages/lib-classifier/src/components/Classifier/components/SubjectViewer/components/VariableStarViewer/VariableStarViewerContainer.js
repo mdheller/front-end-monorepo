@@ -25,6 +25,8 @@ class VariableStarViewerContainer extends Component {
       phasedJSON: {},
       rawJSON: {}
     }
+
+    this.setSeriesFocus = this.setSeriesFocus.bind(this)
   }
 
   async componentDidMount() {
@@ -133,8 +135,10 @@ class VariableStarViewerContainer extends Component {
     })
   }
 
-  setSeriesFocus(seriesToFocus) {
+  setSeriesFocus(event) {
     // TODO add handling
+    console.log('clicky')
+    console.log('event', event)
   }
 
   setYAxisInversion() {
