@@ -16,14 +16,29 @@ class VariableStarViewerContainer extends Component {
     super()
     this.viewer = React.createRef()
     this.state = {
-      barJSON: {},
+      barJSON: {
+        amplitude: {
+          data: [],
+          options: {}
+        },
+        period: {
+          data: [],
+          options: {}
+        }
+      },
       focusedSeries: [],
       imageSrc: '',
       invertYAxis: false,
       loadingState: asyncStates.initialized,
       periodMultiple: 1,
-      phasedJSON: {},
-      rawJSON: {}
+      phasedJSON: {
+        data: [],
+        chartOptions: {}
+      },
+      rawJSON: {
+        data: [],
+        chartOptions: {}
+      }
     }
 
     this.setSeriesFocus = this.setSeriesFocus.bind(this)
@@ -91,6 +106,7 @@ class VariableStarViewerContainer extends Component {
     const phasedJSON = this.calculatePhase(rawJSON)
     const barJSON = this.calculateBarJSON(rawJSON)
     const focusedSeries = this.setupSeriesFocus(rawJSON)
+    console.log('rawJSON', rawJSON)
     this.setState({
       barJSON,
       focusedSeries,
@@ -104,12 +120,24 @@ class VariableStarViewerContainer extends Component {
 
   calculatePhase(rawJSON) {
     // TODO
-    return {}
+    return {
+      data: [],
+      chartOptions: {}
+    }
   }
 
   calculateBarJSON(rawJSON) {
     // TODO
-    return {}
+    return {
+      amplitude: {
+        data: [],
+        options: {}
+      },
+      period: {
+        data: [],
+        options: {}
+      }
+    }
   }
 
   calculateJSON() {
@@ -138,7 +166,7 @@ class VariableStarViewerContainer extends Component {
   setSeriesFocus(event) {
     // TODO add handling
     console.log('clicky')
-    console.log('event', event)
+    console.log('event', event.target)
   }
 
   setYAxisInversion() {
@@ -183,6 +211,7 @@ VariableStarViewerContainer.defaultProps = {
 VariableStarViewerContainer.propTypes = {
   loadingState: PropTypes.string,
   onError: PropTypes.func,
+  onReady: PropTypes.func,
   subject: PropTypes.shape({
     id: PropTypes.string,
     locations: PropTypes.arrayOf(locationValidator)

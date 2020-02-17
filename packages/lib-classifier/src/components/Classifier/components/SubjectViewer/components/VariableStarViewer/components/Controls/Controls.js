@@ -98,11 +98,13 @@ function Controls(props) {
             const Glyph = getDataSeriesSymbol(seriesIndex)
             const checkBoxTheme = getCheckBoxTheme(color)
             return (
-              <Box border={{ color: 'light-6', size: 'xsmall' }} pad={{ horizontal: '5px', vertical: '2.5px' }} round='xsmall'>
-                <ThemeContext.Extend
-                  key={`${label}-${seriesIndex}`}
-                  value={checkBoxTheme}
-                >
+              <Box
+                border={{ color: 'light-6', size: 'xsmall' }}
+                key={`${label}-${seriesIndex}`}
+                pad={{ horizontal: '5px', vertical: '2.5px' }}
+                round='xsmall'
+              >
+                <ThemeContext.Extend value={checkBoxTheme}>
                   <CheckBox
                     checked={checked}
                     id={label}

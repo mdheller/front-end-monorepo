@@ -1,9 +1,11 @@
 import React from 'react'
 import { storiesOf } from '@storybook/react'
+import { Provider } from 'mobx-react'
 import zooTheme from '@zooniverse/grommet-theme'
 import { Box, Grommet } from 'grommet'
 import { withKnobs, boolean, text, object } from '@storybook/addon-knobs'
 import VariableStarViewer from './VariableStarViewer'
+import VariableStarViewerContainer from './VariableStarViewerContainer'
 import ZoomInButton from '../../../ImageToolbar/components/ZoomInButton/ZoomInButton'
 import ZoomOutButton from '../../../ImageToolbar/components/ZoomOutButton/ZoomOutButton'
 import ResetButton from '../../../ImageToolbar/components/ResetButton/ResetButton'
@@ -50,20 +52,49 @@ const focusedSeries = variableStar.data.map((series) => {
   }
 })
 
+const mockStore = {
+  classifications: {
+    active: {
+      annotations: new Map()
+    }
+  },
+  subjectViewer: {
+    enableRotation: () => null,
+    setOnZoom: setZoomCallback
+  },
+  workflowSteps: {
+    activeStepTasks: []
+  }
+}
+
+const subject = {
+  id: '1',
+  locations: [
+    { 'application/json': 'https://raw.githubusercontent.com/zooniverse/front-end-monorepo/master/packages/lib-classifier/src/components/Classifier/components/SubjectViewer/helpers/mockLightCurves/variableStar.json' }
+  ]
+}
+
+function ViewerContext(props) {
+  const { children, theme } = props
+  return (
+    <Provider classifierStore={mockStore}>
+      <Grommet theme={zooTheme}>
+        {children}
+      </Grommet>
+    </Provider>
+  )
+}
+
 stories
   .add('light theme', () => {
     return (
-      <Grommet theme={zooTheme}>
+      <ViewerContext>
         <Box height='500px' width='large'>
-          <VariableStarViewer
-            barJSON={barJSON}
-            focusedSeries={focusedSeries}
-            imgSrc={image}
-            phasedJSON={variableStar}
-            rawJSON={object('data', variableStar)}
+          <VariableStarViewerContainer
+            subject={subject}
           />
         </Box>
-      </Grommet>
+      </ViewerContext>
     )
   }, config)
   .add('dark theme', () => {
