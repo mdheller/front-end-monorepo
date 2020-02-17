@@ -95,7 +95,13 @@ function Controls(props) {
           {focusedSeries.map((series, seriesIndex) => {
             const [[label, checked]] = Object.entries(series)
             const { seriesOptions } = data[seriesIndex]
-            const color = getDataSeriesColor(seriesOptions, seriesIndex, focusedSeries, colors)
+            const color = getDataSeriesColor({
+              seriesOptions,
+              seriesIndex,
+              themeColors: colors,
+              defaultColors: Object.values(colors.drawingTools),
+              focusedSeries
+            })
             const Glyph = getDataSeriesSymbol(seriesIndex)
             const checkBoxTheme = getCheckBoxTheme(color)
             return (

@@ -118,6 +118,9 @@ colorArray(accentColors, 'accent')
 colorArray(darkColors, 'dark')
 colorArray(lightColors, 'light')
 colorArray(neutralColors, 'neutral')
+Object.keys(drawingTools).forEach((color) => {
+  colors[`drawing-${color}`] = drawingTools[color]
+})
 Object.keys(statusColors).forEach((color) => {
   colors[`status-${color}`] = statusColors[color]
 })
