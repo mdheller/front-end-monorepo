@@ -86,7 +86,7 @@ class VariableStarViewerContainer extends Component {
     } catch (error) {
       this.setState({ loadingState: asyncStates.error })
       onError(error)
-      return {}
+      return null
     }
   }
 
@@ -162,7 +162,7 @@ class VariableStarViewerContainer extends Component {
     })
   }
 
-  setSeriesFocus(event) {
+  setSeriesFocus (event) {
     const newFocusedSeriesState = this.state.focusedSeries.map((series) => {
       const [[label, checked]] = Object.entries(series)
       if (label === event.target.value) {
