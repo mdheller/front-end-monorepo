@@ -52,6 +52,7 @@ function Controls(props) {
       }
     }
   } = props
+
   return (
     <Box
       background='neutral-6'

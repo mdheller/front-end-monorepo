@@ -106,7 +106,6 @@ class VariableStarViewerContainer extends Component {
     const phasedJSON = this.calculatePhase(rawJSON)
     const barJSON = this.calculateBarJSON(rawJSON)
     const focusedSeries = this.setupSeriesFocus(rawJSON)
-    console.log('rawJSON', rawJSON)
     this.setState({
       barJSON,
       focusedSeries,
@@ -164,9 +163,16 @@ class VariableStarViewerContainer extends Component {
   }
 
   setSeriesFocus(event) {
-    // TODO add handling
-    console.log('clicky')
-    console.log('event', event.target)
+    const newFocusedSeriesState = this.state.focusedSeries.map((series) => {
+      const [[label, checked]] = Object.entries(series)
+      if (label === event.target.value) {
+        return { [event.target.value]: event.target.checked }
+      } else {
+        return series
+      }
+    })
+
+    this.setState({ focusedSeries: newFocusedSeriesState })
   }
 
   setYAxisInversion() {
