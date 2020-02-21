@@ -70,7 +70,7 @@ export const StyledImage = styled.img`
 `
 
 class FrameCarousel extends React.Component {
-  constructor () {
+  constructor() {
     super()
     this.handlePrevious = this.handlePrevious.bind(this)
     this.handleNext = this.handleNext.bind(this)
