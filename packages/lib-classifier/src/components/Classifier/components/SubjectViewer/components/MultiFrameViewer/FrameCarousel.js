@@ -16,7 +16,7 @@ export const StyledControlButton = styled(Button)`
     color: ${props.theme.global.colors['neutral-6']};
     background: ${props.theme.global.colors.brand};
 
-    &:hover, &:focus {
+    &:hover, &:focus, not(:disabled) {
       background: ${tint(0.5, props.theme.global.colors.brand)};
       box-shadow: none;
     }
@@ -61,19 +61,39 @@ export const StyledInput = styled.input`
 `
 
 export const StyledImage = styled.img`
-  height: 3em;
-  width: 3em;
-  margin: 0.5em;
   float: center;
+  height: 3em;
+  margin: 0.5em;
   object-fit: cover;
   padding: 0;
+  width: 3em;
 `
 
 class FrameCarousel extends React.Component {
   constructor () {
     super()
+    this.handleScroll = this.handleScroll.bind(this)
     this.handlePrevious = this.handlePrevious.bind(this)
     this.handleNext = this.handleNext.bind(this)
+    this.activeLabel = React.createRef()
+    this.frameList = React.createRef()
+  }
+
+  componentDidMount () {
+    this.handleScroll()
+  }
+
+  componentDidUpdate (prevProps) {
+    const { frame } = this.props
+    if (prevProps.frame !== frame) {
+      this.handleScroll()
+    }
+  }
+
+  handleScroll () {
+    if (this.activeLabel.current.offsetTop <= this.frameList.current.scrollTop || this.activeLabel.current.offsetTop >= (this.frameList.current.scrollTop + this.frameList.current.clientHeight)) {
+      this.frameList.current.scrollTop = this.activeLabel.current.offsetTop - this.activeLabel.current.offsetHeight
+    }
   }
 
   handlePrevious () {
@@ -97,7 +117,7 @@ class FrameCarousel extends React.Component {
       const url = location[mimeType]
       const activeFrame = frame === index
       return (
-        <label key={`${url}-${index}`}>
+        <label key={`${url}-${index}`} ref={activeFrame ? this.activeLabel : null} >
           <StyledInput
             checked={activeFrame}
             name='frame'
@@ -112,10 +132,10 @@ class FrameCarousel extends React.Component {
 
     return (
       <Box
-        background='neutral-6'
+        background={{ dark: 'dark-3', light: 'neutral-6' }}
         direction='column'
-        fill='vertical'
-        width={{ 'min': '2em' }}
+        height='450px'
+        width='7em'
       >
         <StyledControlButton
           disabled={frame === 0}
@@ -124,11 +144,12 @@ class FrameCarousel extends React.Component {
           onClick={() => this.handlePrevious()}
         />
         <Box
+          align='center'
           as='ul'
           direction='column'
           fill
-          align='center'
-          overflow='scroll'
+          overflow='auto'
+          ref={this.frameList}
         >
           {locationElements}
         </Box>
