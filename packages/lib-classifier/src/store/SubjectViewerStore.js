@@ -115,8 +115,9 @@ const SubjectViewer = types
         self.rotation -= 90
       },
 
-      setFrame (index) {
+      setFrame (index, callback) {
         self.frame = index
+        callback()
       },
 
       setLayout (layout = layouts.DefaultLayout) {
