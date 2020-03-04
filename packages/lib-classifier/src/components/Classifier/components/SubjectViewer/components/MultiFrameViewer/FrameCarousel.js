@@ -103,8 +103,7 @@ class FrameCarousel extends React.Component {
 
   handleFrameChange (frameIndex) {
     const { onFrameChange } = this.props
-    onFrameChange(frameIndex)
-    this.handleScroll()
+    onFrameChange(frameIndex, this.handleScroll())
   }
 
   handlePrevious () {
