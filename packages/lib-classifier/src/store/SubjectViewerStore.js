@@ -81,7 +81,7 @@ const SubjectViewer = types
         self.loadingState = asyncStates.error
       },
 
-      onSubjectReady (event) {
+      onSubjectLocationLoad (event) {
         const { target = {} } = event || {}
         const {
           clientHeight = 0,

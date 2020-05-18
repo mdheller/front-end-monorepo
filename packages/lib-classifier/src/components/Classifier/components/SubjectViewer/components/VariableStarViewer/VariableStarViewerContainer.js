@@ -112,7 +112,7 @@ class VariableStarViewerContainer extends Component {
       scatterPlot,
       barCharts
     } = rawJSON
-    const { onReady } = this.props
+    const { onSubjectLocationLoad } = this.props
     const target = this.viewer.current
     const phasedJSON = this.calculatePhase(scatterPlot)
     const barJSON = this.calculateBarJSON(barCharts)
@@ -125,7 +125,7 @@ class VariableStarViewerContainer extends Component {
       rawJSON
     },
       function () {
-        onReady({ target })
+        onSubjectLocationLoad({ target })
       })
   }
 
@@ -246,7 +246,7 @@ class VariableStarViewerContainer extends Component {
 VariableStarViewerContainer.defaultProps = {
   loadingState: asyncStates.initialized,
   onError: () => true,
-  onReady: () => true,
+  onSubjectLocationLoad: () => true,
   subject: {
     id: '',
     locations: []
@@ -256,7 +256,7 @@ VariableStarViewerContainer.defaultProps = {
 VariableStarViewerContainer.propTypes = {
   loadingState: PropTypes.string,
   onError: PropTypes.func,
-  onReady: PropTypes.func,
+  onSubjectLocationLoad: PropTypes.func,
   subject: PropTypes.shape({
     id: PropTypes.string,
     locations: PropTypes.arrayOf(locationValidator)

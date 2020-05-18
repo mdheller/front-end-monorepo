@@ -116,11 +116,11 @@ class MultiFrameViewerContainer extends React.Component {
   }
 
   async onLoad () {
-    const { onError, onReady } = this.props
+    const { onError, onSubjectLocationLoad } = this.props
     try {
       const { clientHeight, clientWidth, naturalHeight, naturalWidth } = await this.getImageSize()
       const target = { clientHeight, clientWidth, naturalHeight, naturalWidth }
-      onReady({ target })
+      onSubjectLocationLoad({ target })
     } catch (error) {
       console.error(error)
       onError(error)
@@ -213,7 +213,7 @@ MultiFrameViewerContainer.propTypes = {
   frame: PropTypes.number,
   loadingState: PropTypes.string,
   onError: PropTypes.func,
-  onReady: PropTypes.func,
+  onSubjectLocationLoad: PropTypes.func,
   setFrame: PropTypes.func,
   setOnPan: PropTypes.func,
   setOnZoom: PropTypes.func,
@@ -229,7 +229,7 @@ MultiFrameViewerContainer.defaultProps = {
   ImageObject: window.Image,
   loadingState: asyncStates.initialized,
   onError: () => true,
-  onReady: () => true,
+  onSubjectLocationLoad: () => true,
   setFrame: () => {},
   setOnPan: () => true,
   setOnZoom: () => true

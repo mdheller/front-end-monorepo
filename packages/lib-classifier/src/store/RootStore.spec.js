@@ -51,7 +51,7 @@ describe('Model > RootStore', function () {
     expect(model.onAddToCollection).to.equal(addToCollection)
   })
   
-  describe('when a subject loads', function () {
+  describe('when a subject advances', function () {
     let model
     let subjectSnapshot
 
@@ -116,7 +116,7 @@ describe('Model > RootStore', function () {
       model.subjects.setActive(subjectSnapshot.id)
       model.workflowSteps.selectStep('S2')
       model.feedback.showFeedback()
-      model.subjectViewer.onSubjectReady({})
+      model.subjects.advance()
     })
     
 

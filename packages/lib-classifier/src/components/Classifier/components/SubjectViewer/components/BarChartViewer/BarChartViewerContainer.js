@@ -75,13 +75,13 @@ class BarChartViewerContainer extends Component {
   }
 
   onLoad(JSONdata) {
-    const { onReady } = this.props
+    const { onSubjectLocationLoad } = this.props
     const target = this.viewer.current
     this.setState({
       JSONdata: JSONdata
     },
       function () {
-        onReady({ target })
+        onSubjectLocationLoad({ target })
       })
   }
 
@@ -116,7 +116,7 @@ class BarChartViewerContainer extends Component {
 BarChartViewerContainer.defaultProps = {
   loadingState: asyncStates.initialized,
   onError: () => true,
-  onReady: () => true,
+  onSubjectLocationLoad: () => true,
   subject: {
     id: '',
     locations: []
@@ -126,7 +126,7 @@ BarChartViewerContainer.defaultProps = {
 BarChartViewerContainer.propTypes = {
   loadingState: PropTypes.string,
   onError: PropTypes.func,
-  onReady: PropTypes.func,
+  onSubjectLocationLoad: PropTypes.func,
   subject: PropTypes.shape({
     id: PropTypes.string,
     locations: PropTypes.arrayOf(locationValidator)

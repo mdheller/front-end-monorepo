@@ -154,17 +154,17 @@ describe('Component > ScatterPlotViewerContainer', function () {
       }).then(done, done)
     })
 
-    it('should call the onReady prop', function (done) {
-      const onReadySpy = sinon.spy()
+    it('should call the onSubjectLocationLoad prop', function (done) {
+      const onSubjectLocationLoadSpy = sinon.spy()
       wrapper = shallow(
         <ScatterPlotViewerContainer
-          onReady={onReadySpy}
+          onSubjectLocationLoad={onSubjectLocationLoadSpy}
           subject={subject}
         />
       )
 
       cdmSpy.returnValues[0].then(() => {
-        expect(onReadySpy).to.have.been.calledOnceWith({ target: wrapper.instance().viewer.current })
+        expect(onSubjectLocationLoadSpy).to.have.been.calledOnceWith({ target: wrapper.instance().viewer.current })
       }).then(done, done)
     })
 

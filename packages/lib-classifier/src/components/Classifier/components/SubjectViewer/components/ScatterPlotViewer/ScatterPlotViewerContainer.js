@@ -75,13 +75,13 @@ class ScatterPlotViewerContainer extends Component {
   }
 
   onLoad(JSONdata) {
-    const { onReady } = this.props
+    const { onSubjectLocationLoad } = this.props
     const target = this.viewer.current
     this.setState({
       JSONdata
     },
       function () {
-        onReady({ target })
+        onSubjectLocationLoad({ target })
       })
   }
 
@@ -105,7 +105,7 @@ class ScatterPlotViewerContainer extends Component {
 ScatterPlotViewerContainer.defaultProps = {
   loadingState: asyncStates.initialized,
   onError: () => true,
-  onReady: () => true,
+  onSubjectLocationLoad: () => true,
   subject: {
     id: '',
     locations: []
@@ -115,7 +115,7 @@ ScatterPlotViewerContainer.defaultProps = {
 ScatterPlotViewerContainer.propTypes = {
   loadingState: PropTypes.string,
   onError: PropTypes.func,
-  onReady: PropTypes.func,
+  onSubjectLocationLoad: PropTypes.func,
   subject: PropTypes.shape({
     id: PropTypes.string,
     locations: PropTypes.arrayOf(locationValidator)

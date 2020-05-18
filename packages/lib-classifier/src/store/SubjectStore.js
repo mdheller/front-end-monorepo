@@ -96,6 +96,7 @@ const SubjectStore = types
           openTalkPage(url, newTab)
         }
       }
+      console.log('calling advance', call)
       next(call)
     }
 

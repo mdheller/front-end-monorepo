@@ -96,11 +96,11 @@ class SingleImageViewerContainer extends React.Component {
   }
 
   async onLoad () {
-    const { onError, onReady } = this.props
+    const { onError, onSubjectLocationLoad } = this.props
     try {
       const { clientHeight, clientWidth, naturalHeight, naturalWidth } = await this.getImageSize()
       const target = { clientHeight, clientWidth, naturalHeight, naturalWidth }
-      onReady({ target })
+      onSubjectLocationLoad({ target })
     } catch (error) {
       console.error(error)
       onError(error)
@@ -181,7 +181,7 @@ SingleImageViewerContainer.propTypes = {
   loadingState: PropTypes.string,
   move: PropTypes.bool,
   onError: PropTypes.func,
-  onReady: PropTypes.func,
+  onSubjectLocationLoad: PropTypes.func,
   setOnPan: PropTypes.func,
   setOnZoom: PropTypes.func,
   subject: PropTypes.shape({
@@ -196,7 +196,7 @@ SingleImageViewerContainer.defaultProps = {
   loadingState: asyncStates.initialized,
   move: false,
   onError: () => true,
-  onReady: () => true,
+  onSubjectLocationLoad: () => true,
   setOnPan: () => true,
   setOnZoom: () => true
 }

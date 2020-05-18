@@ -50,11 +50,11 @@ describe('Component > SingleImageViewerContainer', function () {
 
   describe('with a valid subject', function () {
     let imageWrapper
-    const onReady = sinon.stub()
+    const onSubjectLocationLoad = sinon.stub()
     const onError = sinon.stub()
 
     beforeEach(function (done) {
-      onReady.callsFake(() => done())
+      onSubjectLocationLoad.callsFake(() => done())
       onError.callsFake(() => done())
       const subject = {
         id: 'test',
@@ -70,7 +70,7 @@ describe('Component > SingleImageViewerContainer', function () {
           ImageObject={ValidImage}
           subject={subject}
           onError={onError}
-          onReady={onReady}
+          onSubjectLocationLoad={onSubjectLocationLoad}
         />
       )
       imageWrapper = wrapper.find(SingleImageViewer)
@@ -86,7 +86,7 @@ describe('Component > SingleImageViewerContainer', function () {
     })
 
     afterEach(function () {
-      onReady.resetHistory()
+      onSubjectLocationLoad.resetHistory()
     })
 
     it('should render without crashing', function () {
@@ -109,7 +109,7 @@ describe('Component > SingleImageViewerContainer', function () {
           naturalWidth: width
         }
       }
-      expect(onReady).to.have.been.calledOnceWith(expectedEvent)
+      expect(onSubjectLocationLoad).to.have.been.calledOnceWith(expectedEvent)
       expect(onError).to.not.have.been.called()
     })
 
@@ -137,7 +137,7 @@ describe('Component > SingleImageViewerContainer', function () {
 
   describe('with an invalid subject', function () {
     let imageWrapper
-    const onReady = sinon.stub()
+    const onSubjectLocationLoad = sinon.stub()
     const onError = sinon.stub()
 
     before(function () {
@@ -145,7 +145,7 @@ describe('Component > SingleImageViewerContainer', function () {
     })
 
     beforeEach(function (done) {
-      onReady.callsFake(() => done())
+      onSubjectLocationLoad.callsFake(() => done())
       onError.callsFake(() => done())
       const subject = {
         id: 'test',
@@ -158,7 +158,7 @@ describe('Component > SingleImageViewerContainer', function () {
           ImageObject={InvalidImage}
           subject={subject}
           onError={onError}
-          onReady={onReady}
+          onSubjectLocationLoad={onSubjectLocationLoad}
         />
       )
       imageWrapper = wrapper.find(SingleImageViewer)
@@ -175,7 +175,7 @@ describe('Component > SingleImageViewerContainer', function () {
 
     afterEach(function () {
       onError.resetHistory()
-      onReady.resetHistory()
+      onSubjectLocationLoad.resetHistory()
     })
 
     after(function () {
@@ -196,8 +196,8 @@ describe('Component > SingleImageViewerContainer', function () {
       expect(onError.withArgs(HTMLImgError)).to.have.been.calledOnce()
     })
 
-    it('should not call onReady', function () {
-      expect(onReady).to.not.have.been.called()
+    it('should not call onSubjectLocationLoad', function () {
+      expect(onSubjectLocationLoad).to.not.have.been.called()
     })
   })
 })

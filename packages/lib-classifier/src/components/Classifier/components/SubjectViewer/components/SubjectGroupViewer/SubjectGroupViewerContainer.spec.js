@@ -56,11 +56,11 @@ describe('Component > SubjectGroupViewerContainer', function () {
 
   describe('with a valid subject', function () {
     let groupWrapper
-    const onReady = sinon.stub()
+    const onSubjectLocationLoad = sinon.stub()
     const onError = sinon.stub()
 
     beforeEach(function (done) {
-      onReady.callsFake(() => done())
+      onSubjectLocationLoad.callsFake(() => done())
       onError.callsFake(() => done())
       const subject = {
         id: 'test',
@@ -81,7 +81,7 @@ describe('Component > SubjectGroupViewerContainer', function () {
           ImageObject={ValidImage}
           subject={subject}
           onError={onError}
-          onReady={onReady}
+          onSubjectLocationLoad={onSubjectLocationLoad}
           cellWidth={cellWidth}
           cellHeight={cellHeight}
           gridColumns={gridColumns}
@@ -101,7 +101,7 @@ describe('Component > SubjectGroupViewerContainer', function () {
     })
 
     afterEach(function () {
-      onReady.resetHistory()
+      onSubjectLocationLoad.resetHistory()
     })
 
     it('should render without crashing', function () {
@@ -119,7 +119,7 @@ describe('Component > SubjectGroupViewerContainer', function () {
 
   describe('with an invalid subject', function () {
     let groupWrapper
-    const onReady = sinon.stub()
+    const onSubjectLocationLoad = sinon.stub()
     const onError = sinon.stub()
 
     before(function () {
@@ -127,7 +127,7 @@ describe('Component > SubjectGroupViewerContainer', function () {
     })
 
     beforeEach(function (done) {
-      onReady.callsFake(() => done())
+      onSubjectLocationLoad.callsFake(() => done())
       onError.callsFake(() => done())
       const subject = {
         id: 'test',
@@ -140,7 +140,7 @@ describe('Component > SubjectGroupViewerContainer', function () {
           ImageObject={InvalidImage}
           subject={subject}
           onError={onError}
-          onReady={onReady}
+          onSubjectLocationLoad={onSubjectLocationLoad}
         />
       )
       groupWrapper = wrapper.find(SubjectGroupViewer)
@@ -157,7 +157,7 @@ describe('Component > SubjectGroupViewerContainer', function () {
 
     afterEach(function () {
       onError.resetHistory()
-      onReady.resetHistory()
+      onSubjectLocationLoad.resetHistory()
     })
 
     after(function () {
@@ -178,8 +178,8 @@ describe('Component > SubjectGroupViewerContainer', function () {
       expect(onError.withArgs(HTMLImgError)).to.have.been.calledOnce()
     })
 
-    it('should not call onReady', function () {
-      expect(onReady).to.not.have.been.called()
+    it('should not call onSubjectLocationLoad', function () {
+      expect(onSubjectLocationLoad).to.not.have.been.called()
     })
   })
 })

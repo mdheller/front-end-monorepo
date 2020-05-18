@@ -112,7 +112,7 @@ describe('Model > SubjectViewerStore', function () {
     it('should reset the rotation angle when subject is ready', function () {
       subjectViewerStore.rotate()
       expect(subjectViewerStore.rotation).to.equal(-90)
-      subjectViewerStore.onSubjectReady()
+      subjectViewerStore.onSubjectLocationLoad()
       expect(subjectViewerStore.rotation).to.equal(0)
     })
 

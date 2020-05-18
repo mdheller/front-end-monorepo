@@ -132,12 +132,12 @@ class SubjectGroupViewerContainer extends React.Component {
   }
 
   async onLoad () {
-    const { onError, onReady } = this.props
+    const { onError, onSubjectLocationLoad } = this.props
     try {
       await this.preload()
       const { clientHeight, clientWidth, gridHeight: naturalHeight, gridWidth: naturalWidth } = this.getGridSize()
       const target = { clientHeight, clientWidth, naturalHeight, naturalWidth }
-      onReady({ target })
+      onSubjectLocationLoad({ target })
     } catch (error) {
       console.error(error)
       onError(error)
@@ -271,7 +271,7 @@ class SubjectGroupViewerContainer extends React.Component {
 SubjectGroupViewerContainer.propTypes = {
   loadingState: PropTypes.string,
   onError: PropTypes.func,
-  onReady: PropTypes.func,
+  onSubjectLocationLoad: PropTypes.func,
   setOnPan: PropTypes.func,
   setOnZoom: PropTypes.func,
   subject: PropTypes.shape({
@@ -283,7 +283,7 @@ SubjectGroupViewerContainer.defaultProps = {
   ImageObject: window.Image,
   loadingState: asyncStates.initialized,
   onError: () => true,
-  onReady: () => true,
+  onSubjectLocationLoad: () => true,
   setOnPan: () => true,
   setOnZoom: () => true
 }

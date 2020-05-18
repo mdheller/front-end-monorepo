@@ -10,7 +10,7 @@ import RootStore from '@store'
 import { ProjectFactory, SubjectFactory, WorkflowFactory } from '@test/factories'
 import stubPanoptesJs from '@test/stubPanoptesJs'
 
-describe('Tasks', function () {
+describe.only('Tasks', function () {
   let classification
   let step
   let TaskComponent
@@ -54,6 +54,9 @@ describe('Tasks', function () {
         workflows: [workflowSnapshot]
       })
       const client = {
+        caesar: {
+          request: sinon.stub().callsFake(() => Promise.resolve({}))
+        },
         panoptes,
         tutorials: {
           get: sinon.stub().callsFake(() =>
@@ -93,7 +96,7 @@ describe('Tasks', function () {
       rootStore.workflows.setActive(workflowSnapshot.id)
       rootStore.subjects.setResource(subjectSnapshot)
       rootStore.subjects.setActive(subjectSnapshot.id)
-      rootStore.subjectViewer.onSubjectReady()
+      rootStore.subjectViewer.onSubjectLocationLoad()
       classification = rootStore.classifications.active
       step = rootStore.workflowSteps.active
     })
@@ -124,7 +127,7 @@ describe('Tasks', function () {
         expect(wrapper.type()).to.be.null()
       })
 
-      it('should render the correct task component if the workflow is loaded', function () {
+      it.only('should render the correct task component if the workflow is loaded', function () {
         const wrapper = shallow(
           <Tasks
             loadingState={asyncStates.success}
@@ -134,6 +137,7 @@ describe('Tasks', function () {
           />
         )
         // Is there a better way to do this?
+        console.log(wrapper.debug())
         expect(wrapper.find(TaskComponent.displayName)).to.have.lengthOf(1)
       })
 
@@ -146,7 +150,7 @@ describe('Tasks', function () {
               <Tasks
                 classification={classification}
                 loadingState={asyncStates.success}
-                subjectReadyState={asyncStates.loading}
+                subjectViewerState={asyncStates.loading}
                 step={step}
               />
             )
@@ -164,7 +168,7 @@ describe('Tasks', function () {
               <Tasks
                 classification={classification}
                 loadingState={asyncStates.success}
-                subjectReadyState={asyncStates.success}
+                subjectViewerState={asyncStates.success}
                 step={step}
               />
             )

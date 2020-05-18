@@ -113,7 +113,7 @@ class LightCurveViewerContainer extends Component {
   }
 
   onLoad (rawData) {
-    const { onReady } = this.props
+    const { onSubjectLocationLoad } = this.props
     const target = this.viewer.current
     this.setState({
       dataExtent: {
@@ -123,7 +123,7 @@ class LightCurveViewerContainer extends Component {
       dataPoints: zip(rawData.x, rawData.y)
     },
     function () {
-      onReady({ target })
+      onSubjectLocationLoad({ target })
     })
   }
 
@@ -176,7 +176,7 @@ LightCurveViewerContainer.defaultProps = {
   interactionMode: 'annotate',
   loadingState: asyncStates.initialized,
   onError: () => true,
-  onReady: () => true,
+  onSubjectLocationLoad: () => true,
   subject: {
     id: '',
     locations: []
@@ -191,7 +191,7 @@ LightCurveViewerContainer.propTypes = {
   loadingState: PropTypes.string,
   onError: PropTypes.func,
   onKeyDown: PropTypes.func.isRequired,
-  onReady: PropTypes.func,
+  onSubjectLocationLoad: PropTypes.func,
   setOnPan: PropTypes.func.isRequired,
   setOnZoom: PropTypes.func.isRequired,
   subject: PropTypes.shape({

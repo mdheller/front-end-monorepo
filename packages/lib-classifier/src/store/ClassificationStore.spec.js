@@ -8,7 +8,6 @@ import {
   ProjectFactory,
   SingleChoiceAnnotationFactory,
   SingleChoiceTaskFactory,
-  SubjectFactory,
   WorkflowFactory
 } from '@test/factories'
 import stubPanoptesJs from '@test/stubPanoptesJs'
@@ -45,16 +44,9 @@ describe('Model > ClassificationStore', function () {
     store.projects.setActive(projectSnapshot.id)
     store.workflows.setResource(workflowSnapshot)
     store.workflows.setActive(workflowSnapshot.id)
-    store.subjects.setResource(subjectsSnapshot[0])
-    store.subjects.setActive(subjectsSnapshot[0].id)
-    store.subjectViewer.onSubjectReady({
-      target: {
-        naturalHeight: 200,
-        naturalWidth: 400
-      }
-    })
+    store.subjects.advance()
     /*
-      onSubjectReady resets the feedback store so
+      the subject advance observer in the RootStore resets the feedback store so
       apply any feedback rules manually for now.
     */
     applySnapshot(store.feedback, stores.feedback)
@@ -124,13 +116,6 @@ describe('Model > ClassificationStore', function () {
         userProjectPreferences: {}
       })
       classifications = rootStore.classifications
-      rootStore.subjects.advance()
-      rootStore.subjectViewer.onSubjectReady({
-        target: {
-          naturalHeight: 200,
-          naturalWidth: 400
-        }
-      })
     })
 
     afterEach(function () {
@@ -141,9 +126,7 @@ describe('Model > ClassificationStore', function () {
     it('should reset and create a new classification', function () {
       const firstClassificationId = classifications.active.id
       expect(classifications.active.toJSON()).to.ok()
-      rootStore.subjects.setResource(subjectsSnapshot[1])
-      rootStore.subjects.setActive(subjectsSnapshot[1].id)
-      rootStore.subjectViewer.onSubjectReady()
+      rootStore.subjects.advance()
       expect(classifications.active.id).to.not.equal(firstClassificationId)
     })
   })
